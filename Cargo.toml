@@ -1,0 +1,6 @@
+[package]
+name = "arabic"
+version = "0.0.1"
+authors = ["tareifz <root@tareifz.me>"]
+
+[dependencies]
