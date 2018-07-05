@@ -1,3 +1,8 @@
+pub struct Filter {
+    pub diacritics: bool,
+    pub hamzah: bool,
+}
+
 pub fn is_diacritic(c: &char) -> bool {
     match *c {
         'َ' | 'ُ' | 'ِ' | 'ْ' |
@@ -10,6 +15,30 @@ pub fn remove_diacritics(s: &str) -> String {
     s.chars().filter(|c| {
         !is_diacritic(&c)
     }).collect::<String>()
+}
+
+pub fn remove(s: &str, filter: Filter) -> String {
+    let len = s.chars().count();
+
+    s.chars().fold(String::with_capacity(len), |mut acc, c| {
+        let mut insert = true;
+        let mut character = c;
+
+        if filter.diacritics && is_diacritic(&c) {
+            insert = false;
+        }
+
+        if filter.hamzah {
+                match c {
+                    'إ' | 'أ' | 'آ' => character = 'ا',
+                    _ => (),
+                };
+        }
+
+        if insert { acc.push(character); }
+
+        acc
+    })
 }
 
 #[cfg(test)]
